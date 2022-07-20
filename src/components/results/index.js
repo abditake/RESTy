@@ -1,10 +1,13 @@
 import React from 'react';
+import JSONPretty from "react-json-pretty";
+import "react-json-pretty/themes/acai.css";
+
 
 const Results = (props) => {
   const { data } = props;
   return (
     <section>
-      <pre>{data ? JSON.stringify(this.props.data, undefined, 2) : null}</pre>
+      <JSONPretty id="json-pretty" data={data}></JSONPretty>
     </section>
   )
 }
