@@ -1,31 +1,21 @@
 # Component Based UI
 
-## Lab Requirements
+## Overview
+Today, we begin the first of a 4-Phase build of the RESTy application, written in React. In this first phase, our goal is to setup the basic scaffolding of the application, with intent being to add more functionality to the system as we go. This initial build sets up the file structure so that we can progressively build this application in a scalable manner
 
-Students will be creating and styling a Counter application. Look for the following attributes
+### Lab Requirements
+1. Convert all child components of App.js from classes to functions
+   - The App component serves as the container for all sub-components of this application.
+   - Leave this component as a Class.
+   - Make sure all base styles for App are included in a .scss imported within App.js.
+   - Ensure that the Header, Footer, Results and Form components are imported using ES6 import syntax.
+2. Use .scss files to style each component
+   - Each of the components use their own .scss file for styling.
+3. Core application functionality should remain unchanged:
+   - The `<Form>` component should:
+     - Call a function on submit that updates the `<App/>` component via a function sent down as a prop so that the app can process the form values.
+   - The `<Results/>` component should show mock API results.
 
-- `Header`, `Footer`, and `Counter` components to separate files
-- Properly `export` them as defaults
-- Import them into the `App` Component using ES6 `import` statement
-- Proper state management
-- Button Handlers
-  - Bonus if they can wire both buttons with one handler
+### Uml
 
-### Grading Standards & Notes
-
-- Features
-  - As noted
-- Code Quality
-  - Looking for proper class syntax.
-  - Good file naming and folder structure.
-  - Styles well written, using SASS variables/nesting and thought through beyond simple colors.
-- Testing
-  - Not Required
-- Deployment
-  - Code Sandbox only.
-- Documentation
-  - Quality README
-
-### Lab Assistance Notes
-
-- The first and most important part of the lab assignment is to draw a process diagram of the starter code and state as events happen. Once the students understand that, they can move on.
+- ![uml](./img/lab-26.png)
