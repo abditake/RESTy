@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import './app.scss';
 
@@ -9,6 +9,7 @@ import Header from './components/header';
 import Footer from './components/footer';
 import Form from './components/form';
 import Results from './components/results';
+import axios from 'axios';
 
 const App = () => {
 
@@ -18,18 +19,22 @@ const App = () => {
   const [requestParams, setRequestParams] = useState({});
   
   let callApi = (requestParams) => {
-    // mock output
-    const jsonData = {
-      count: 2,
-      results: [
-        {name: 'fake thing 1', url: 'http://fakethings.com/1'},
-        {name: 'fake thing 2', url: 'http://fakethings.com/2'},
-      ],
-    };
-    setData(jsonData)
     setRequestParams(requestParams);
   }
 
+  useEffect(()=>{
+    const getData = async () => {
+      const response = await axios.get({
+        method:requestParams.method,
+        url:requestParams.url,
+      })
+    }
+    getData(); 
+  },[requestParams]);
+ 
+
+
+ console.log(data);
     return (
       <>
         <Header />

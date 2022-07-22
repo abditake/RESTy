@@ -6,6 +6,7 @@ const Form = (props) => {
   
   const { handleApiCall } = props;
   const [method, setMethod,] = useState();
+  const [url, setUrl,] = useState();
   
 
   let handleSubmit = e => {
