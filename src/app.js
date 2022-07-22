@@ -22,19 +22,26 @@ const App = () => {
     setRequestParams(requestParams);
   }
 
-  useEffect(()=>{
-    const getData = async () => {
-      const response = await axios.get({
-        method:requestParams.method,
-        url:requestParams.url,
-      })
+  useEffect(() => {
+    if(requestParams.url) {
+      try {
+        async function getData() {
+          let apiUrl = requestParams.url;
+          const response = await axios(apiUrl);
+          const resultData = {
+            Headers: response.headers,
+            count: response.data.count,
+            Response: response
+          };
+          setData(resultData);
+        }
+        getData();
+      } catch (e) {
+        console.log(e);
+      }
     }
-    getData(); 
-  },[requestParams]);
+  }, [requestParams]);
  
-
-
- console.log(data);
     return (
       <>
         <Header />
