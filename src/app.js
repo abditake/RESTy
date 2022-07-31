@@ -27,7 +27,7 @@ const App = () => {
       try {
         async function getData() {
           let apiUrl = requestParams.url;
-          const response = await axios('https://pokeapi.co/api/v2/pokemon');
+          const response = await axios(apiUrl);
           const resultData = {
             Headers: response.headers,
             count: response.data.count,
