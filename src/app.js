@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 
 import './app.scss';
 
@@ -9,50 +9,83 @@ import Header from './components/header';
 import Footer from './components/footer';
 import Form from './components/form';
 import Results from './components/results';
+import History from './components/history';
 import axios from 'axios';
 
-const App = () => {
+export const initialState = {
+  data: null,
+  requestParams: {},
+}
 
-  const [data ,setData] = useState(null);
-  
-  // make sure when dealing with the params or api stuff that useState accepts an object it was crashing because i was using it without brackets
-  const [requestParams, setRequestParams] = useState({});
-  
-  let callApi = (requestParams) => {
-    setRequestParams(requestParams);
+export const restyReducer = (state, action) => {
+
+  switch (action.type) {
+
+    case 'DATA':
+      return {
+        ...state,
+        data: action.payload,
+      }
+
+    case 'PARAMS':
+      return {
+        ...state,
+        requestParams: action.payload
+      }
+
+    default:
+      return state
+  }
+}
+
+
+const App = () => {
+  const[history, setHistory]= useState([]);
+  const [state, dispatch] = useReducer(restyReducer, initialState);
+    console.log(history);
+
+  function callApi(requestParams) {
+    dispatch({ type: 'PARAMS', payload: requestParams })
+    setHistory(...history, requestParams);
   }
 
   useEffect(() => {
-    if(requestParams.url) {
-      try {
-        async function getData() {
-          let apiUrl = requestParams.url;
-          const response = await axios(apiUrl);
-          const resultData = {
-            Headers: response.headers,
-            count: response.data.count,
-            Response: response
-          };
-          setData(resultData);
-        }
-        getData();
-      } catch (e) {
-        console.log(e);
+    const getData = async () => {
+      if (state.requestParams.url) {
+        const response = await axios({
+          method: state.requestParams.method,
+          url: state.requestParams.url,
+        })
+        
+        dispatch({ type: 'DATA', payload: response.data})
       }
+      
     }
-  }, [requestParams]);
- 
-    return (
-      <>
-        <Header />
-        <div>Request Method: {requestParams.method}</div>
-        <div>URL: {requestParams.url}</div>
-        <Form handleApiCall={callApi} />
-        <Results data={data} />
-        <Footer />
-      </>
-    );
+    getData();
+  }, [state.requestParams]);
 
+  return (
+    <>
+      <Header />
+      <div>Request Method: {state.requestParams.method}</div>
+      <div>URL: {state.requestParams.url}</div>
+      <div>JSON Body: {state.requestParams.body}</div>
+      <Form
+        handleApiCall={callApi}
+      />
+      <Results
+        data={state.data}
+      />
+      {state.data ? <History
+      history={history}
+      data={state.data}
+      requestParams={state.requestParams}
+    /> : <h1> Loading...</h1>
+    }
+      <Footer />
+    </>
+
+  );
 }
 
 export default App;
