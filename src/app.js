@@ -42,12 +42,13 @@ export const restyReducer = (state, action) => {
 const App = () => {
   const[history, setHistory]= useState([]);
   const [state, dispatch] = useReducer(restyReducer, initialState);
-    console.log(history);
+  
 
   function callApi(requestParams) {
     dispatch({ type: 'PARAMS', payload: requestParams })
-    setHistory(...history, requestParams);
   }
+
+
 
   useEffect(() => {
     const getData = async () => {
@@ -58,12 +59,17 @@ const App = () => {
         })
         
         dispatch({ type: 'DATA', payload: response.data})
+        setHistory([...history, {
+          url: state.requestParams.url,
+          method: state.requestParams.method,
+          data: response.data
+      }]);
       }
-      
     }
     getData();
   }, [state.requestParams]);
 
+  console.log(history);
   return (
     <>
       <Header />
